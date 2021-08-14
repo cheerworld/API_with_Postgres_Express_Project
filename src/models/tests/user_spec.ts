@@ -33,21 +33,41 @@ describe("User Model", () => {
       last_name: "Zhao",
       password: "1234",
     });
-    //console.log(result);
     expect(result.id).toBe(1);
   });
 
   it("index method should return a list of users", async () => {
     const result = await store.index();
-    console.log(result);
     expect(result).toHaveSize(1);
   });
 
   it("show method should return the correct user", async () => {
     const result = await store.show(1);
-    console.log(result);
-    console.log(result.first_name);
 
     expect(result.first_name).toEqual("Yuguo");
+  });
+
+  it("update method should update the existing user first name to Cheer", async () => {
+    const user = {
+      id: 1,
+      first_name: "Cheer",
+      last_name: "Zhao",
+      password: "12345",
+    };
+    const result = await store.update(user);
+
+    expect(result.first_name).toEqual("Cheer");
+  });
+
+  it("authenticate method should verify the input user info match user info in database", async () => {
+    const result = await store.authenticate("Yuguo", "Zhao", "12345");
+
+    expect(result).toBeNull();
+  });
+
+  it("delete method should delete the user", async () => {
+    await store.delete(1);
+    const result = await store.index();
+    expect(result).toHaveSize(0);
   });
 });
