@@ -29,8 +29,8 @@ describe("User Model", () => {
 
   it("create method should add a user", async () => {
     const result = await store.create({
-      firstName: "Yuguo",
-      lastName: "Zhao",
+      first_name: "Yuguo",
+      last_name: "Zhao",
       password: "1234",
     });
     //console.log(result);
@@ -46,9 +46,8 @@ describe("User Model", () => {
   it("show method should return the correct user", async () => {
     const result = await store.show(1);
     console.log(result);
-    console.log(result.id);
-    //console.log(result.firstname);
+    console.log(result.first_name);
 
-    expect(result.firstName).toEqual("Yuguo");
+    expect(result.first_name).toEqual("Yuguo");
   });
 });

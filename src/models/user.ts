@@ -8,8 +8,8 @@ const { PEPPER, SALT_ROUNDS } = process.env;
 
 export type User = {
   id?: number;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   password: string;
 };
 
@@ -42,17 +42,17 @@ export class UserStore {
     try {
       const conn = await client.connect();
       const sql =
-        "INSERT INTO users (firstName, lastName, password) VALUES ($1, $2, $3) RETURNING *";
+        "INSERT INTO users (first_name, last_name, password) VALUES ($1, $2, $3) RETURNING *";
       const hash = bcrypt.hashSync(
         u.password + PEPPER,
         parseInt(SALT_ROUNDS as string)
       );
-      const result = await conn.query(sql, [u.firstName, u.lastName, hash]);
+      const result = await conn.query(sql, [u.first_name, u.last_name, hash]);
       const user = result.rows[0];
       conn.release();
       return user;
     } catch (err) {
-      throw new Error(`Cannot add new user ${u.firstName}. Error: ${err}.`);
+      throw new Error(`Cannot add new user ${u.first_name}. Error: ${err}.`);
     }
   }
 
@@ -60,15 +60,15 @@ export class UserStore {
     try {
       const conn = await client.connect();
       const sql =
-        "UPDATE users SET firstName=($1), lastName=($2), password=($3) WHERE id=($4) RETURNING *";
+        "UPDATE users SET first_name=($1), last_name=($2), password=($3) WHERE id=($4) RETURNING *";
       const hash = bcrypt.hashSync(
         u.password + PEPPER,
         parseInt(SALT_ROUNDS as string)
       );
 
       const result = await conn.query(sql, [
-        u.firstName,
-        u.lastName,
+        u.first_name,
+        u.last_name,
         hash,
         u.id,
       ]);
@@ -76,7 +76,7 @@ export class UserStore {
       conn.release();
       return user;
     } catch (err) {
-      throw new Error(`Cannot update user ${u.firstName}. Error: ${err}.`);
+      throw new Error(`Cannot update user ${u.first_name}. Error: ${err}.`);
     }
   }
 
@@ -94,14 +94,15 @@ export class UserStore {
   }
 
   async authenticate(
-    firstName: string,
-    lastName: string,
+    first_name: string,
+    last_name: string,
     password: string
   ): Promise<User | null> {
     try {
       const conn = await client.connect();
-      const sql = "SELECT * FROM users WHERE firstName=($1) AND lastName=($2)";
-      const result = await conn.query(sql, [firstName, lastName]);
+      const sql =
+        "SELECT * FROM users WHERE first_name=($1) AND last_name=($2)";
+      const result = await conn.query(sql, [first_name, last_name]);
 
       if (result.rows.length) {
         const user = result.rows[0];
@@ -113,7 +114,7 @@ export class UserStore {
 
       return null;
     } catch (err) {
-      throw new Error(`Cannot authenticate user ${firstName}. Error: ${err}.`);
+      throw new Error(`Cannot authenticate user ${first_name}. Error: ${err}.`);
     }
   }
 }

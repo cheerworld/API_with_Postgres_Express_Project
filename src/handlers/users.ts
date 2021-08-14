@@ -34,8 +34,8 @@ const show = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
   const user: User = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
     password: req.body.password,
   };
 
@@ -55,8 +55,8 @@ const create = async (req: Request, res: Response) => {
 const update = async (req: Request, res: Response) => {
   const user: User = {
     id: parseInt(req.params.id),
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
     password: req.body.password,
   };
 
@@ -86,8 +86,8 @@ const remove = async (req: Request, res: Response) => {
 const authenticate = async (req: Request, res: Response) => {
   try {
     const authUser = await store.authenticate(
-      req.body.firstName,
-      req.body.lastName,
+      req.body.first_name,
+      req.body.last_name,
       req.body.password
     );
 
