@@ -1,5 +1,6 @@
 import client from "../database";
 import { Order } from "../models/order";
+import { Product } from "../models/product";
 
 export type PopularProducts = {
   name: string;
@@ -25,7 +26,7 @@ export class DashboardQueries {
       throw new Error(`Unable to get current Orders by user. Error: ${err}.`);
     }
   }
-
+  //Get 5 most popular products by oders's quantity
   async fiveMostPopular(): Promise<PopularProducts[]> {
     try {
       const conn = await client.connect();
@@ -36,7 +37,20 @@ export class DashboardQueries {
 
       return result.rows;
     } catch (err) {
-      throw new Error(`Unable to get products by popularity: ${err}.`);
+      throw new Error(`Unable to get products by popularity. Error: ${err}.`);
+    }
+  }
+  //Get products by category (args: product category)
+  async productsByCategory(category: string): Promise<Product[]> {
+    try {
+      const conn = await client.connect();
+      const sql = "SELECT * FROM products WHERE category=($1)";
+      const result = await conn.query(sql, [category]);
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Unable to get products by category. Error: ${err}.`);
     }
   }
 }

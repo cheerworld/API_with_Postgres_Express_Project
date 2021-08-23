@@ -35,6 +35,16 @@ const currentOrdersByUser = async (req: Request, res: Response) => {
   }
 };
 
+const productsByCategory = async (req: Request, res: Response) => {
+  try {
+    const products = await dashboard.productsByCategory(req.params.category);
+    res.json(products);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
 const verifyUserId = (
   req: Request,
   res: Response,
@@ -60,6 +70,7 @@ const verifyUserId = (
 
 const dashboard_routes = (app: express.Application) => {
   app.get("/five_most_popular", fiveMostPopular);
+  app.get("/products/categories/:category", productsByCategory);
   app.post("/orders/users/:userID/current", verifyUserId, currentOrdersByUser);
 };
 
