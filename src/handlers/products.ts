@@ -1,9 +1,6 @@
 import express, { Request, Response } from "express";
 import { Product, ProductStore } from "../models/product";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { verifyAuthToken } from "../services/verificationJWT";
 
 const store = new ProductStore();
 
@@ -66,23 +63,6 @@ const remove = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(400);
     res.json(err);
-  }
-};
-
-const verifyAuthToken = (
-  req: Request,
-  res: Response,
-  next: express.NextFunction
-) => {
-  try {
-    const authorizationHeader = req.headers.authorization;
-    const token = (authorizationHeader as string).split(" ")[1];
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET as jwt.Secret);
-    next();
-  } catch (error) {
-    res.status(401);
-    res.json(`Access denied, invalid token ${error}`);
-    return;
   }
 };
 

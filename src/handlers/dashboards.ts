@@ -1,15 +1,6 @@
 import express, { Request, Response } from "express";
 import { DashboardQueries } from "../services/dashboard";
-import { User } from "../models/user";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-interface TokenInterface {
-  user: User;
-  iat: number;
-}
+import { verifyUserId } from "../services/verificationJWT";
 
 const dashboard = new DashboardQueries();
 
@@ -25,9 +16,7 @@ const fiveMostPopular = async (req: Request, res: Response) => {
 
 const currentOrdersByUser = async (req: Request, res: Response) => {
   try {
-    const orders = await dashboard.currentOrdersByUser(
-      parseInt(req.params.userID)
-    );
+    const orders = await dashboard.currentOrdersByUser(parseInt(req.params.id));
     res.json(orders);
   } catch (err) {
     res.status(400);
@@ -38,7 +27,7 @@ const currentOrdersByUser = async (req: Request, res: Response) => {
 const completeOrdersByUser = async (req: Request, res: Response) => {
   try {
     const orders = await dashboard.completeOrdersByUser(
-      parseInt(req.params.userID)
+      parseInt(req.params.id)
     );
     res.json(orders);
   } catch (err) {
@@ -57,38 +46,11 @@ const productsByCategory = async (req: Request, res: Response) => {
   }
 };
 
-const verifyUserId = (
-  req: Request,
-  res: Response,
-  next: express.NextFunction
-) => {
-  try {
-    const authorizationHeader = req.headers.authorization;
-    const token = (authorizationHeader as string).split(" ")[1];
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET as jwt.Secret);
-    console.log(decoded);
-    const id = (decoded as TokenInterface).user.id;
-    console.log(id);
-    if (id !== parseInt(req.params.userID)) {
-      throw new Error("User id does not match!");
-    }
-    next();
-  } catch (err) {
-    res.status(401);
-    res.json(err);
-    return;
-  }
-};
-
 const dashboard_routes = (app: express.Application) => {
   app.get("/five_most_popular", fiveMostPopular);
   app.get("/products/categories/:category", productsByCategory);
-  app.post("/orders/users/:userID/current", verifyUserId, currentOrdersByUser);
-  app.post(
-    "/orders/users/:userID/complete",
-    verifyUserId,
-    completeOrdersByUser
-  );
+  app.post("/orders/users/:id/current", verifyUserId, currentOrdersByUser);
+  app.post("/orders/users/:id/complete", verifyUserId, completeOrdersByUser);
 };
 
 export default dashboard_routes;
