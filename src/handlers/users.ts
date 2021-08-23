@@ -151,8 +151,8 @@ const verifyUserId = (
 };
 
 const users_routes = (app: express.Application) => {
-  app.get("/users", verifyAuthToken, index);
-  app.get("/users/:id", verifyAuthToken, show);
+  app.post("/users", verifyAuthToken, index);
+  app.post("/users/:id", verifyAuthToken, show);
   app.post("/users", create);
   app.put("/users/:id", verifyUserId, update);
   app.delete("/users/:id", verifyUserId, remove);
