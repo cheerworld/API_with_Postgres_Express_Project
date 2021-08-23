@@ -26,6 +26,21 @@ export class DashboardQueries {
       throw new Error(`Unable to get current Orders by user. Error: ${err}.`);
     }
   }
+
+  //Get complete orders by user (args: user id)[token required]
+  async completeOrdersByUser(id: number): Promise<Order[]> {
+    try {
+      const conn = await client.connect();
+      const sql = "SELECT * FROM orders WHERE user_id=($1)";
+      const result = await conn.query(sql, [id]);
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Unable to get complete Orders by user. Error: ${err}.`);
+    }
+  }
+
   //Get 5 most popular products by oders's quantity
   async fiveMostPopular(): Promise<PopularProducts[]> {
     try {

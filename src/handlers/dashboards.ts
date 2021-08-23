@@ -35,6 +35,18 @@ const currentOrdersByUser = async (req: Request, res: Response) => {
   }
 };
 
+const completeOrdersByUser = async (req: Request, res: Response) => {
+  try {
+    const orders = await dashboard.completeOrdersByUser(
+      parseInt(req.params.userID)
+    );
+    res.json(orders);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
 const productsByCategory = async (req: Request, res: Response) => {
   try {
     const products = await dashboard.productsByCategory(req.params.category);
@@ -72,6 +84,11 @@ const dashboard_routes = (app: express.Application) => {
   app.get("/five_most_popular", fiveMostPopular);
   app.get("/products/categories/:category", productsByCategory);
   app.post("/orders/users/:userID/current", verifyUserId, currentOrdersByUser);
+  app.post(
+    "/orders/users/:userID/complete",
+    verifyUserId,
+    completeOrdersByUser
+  );
 };
 
 export default dashboard_routes;
