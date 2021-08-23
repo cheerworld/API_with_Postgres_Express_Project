@@ -1,5 +1,15 @@
 import client from "../database";
 import { Order } from "../models/order";
+
+export type PopularProducts = {
+  name: string;
+  price: string;
+  category: string;
+  quantity: number;
+  order_id: string;
+  product_id: string;
+};
+
 export class DashboardQueries {
   //Get current Orders by user (args: user id)[token required]
 
@@ -13,6 +23,20 @@ export class DashboardQueries {
       return result.rows;
     } catch (err) {
       throw new Error(`Unable to get current Orders by user. Error: ${err}.`);
+    }
+  }
+
+  async fiveMostPopular(): Promise<PopularProducts[]> {
+    try {
+      const conn = await client.connect();
+      const sql =
+        " SELECT name, price, category, quantity, order_id, product_id FROM products INNER JOIN order_products ON products.id=order_products.product_id ORDER BY quantity DESC LIMIT 5";
+      const result = await conn.query(sql);
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Unable to get products by popularity: ${err}.`);
     }
   }
 }

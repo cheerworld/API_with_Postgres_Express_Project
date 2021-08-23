@@ -13,11 +13,26 @@ interface TokenInterface {
 
 const dashboard = new DashboardQueries();
 
+const fiveMostPopular = async (req: Request, res: Response) => {
+  try {
+    const products = await dashboard.fiveMostPopular();
+    res.json(products);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
 const currentOrdersByUser = async (req: Request, res: Response) => {
-  const orders = await dashboard.currentOrdersByUser(
-    parseInt(req.params.userID)
-  );
-  res.json(orders);
+  try {
+    const orders = await dashboard.currentOrdersByUser(
+      parseInt(req.params.userID)
+    );
+    res.json(orders);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
 };
 
 const verifyUserId = (
@@ -44,7 +59,8 @@ const verifyUserId = (
 };
 
 const dashboard_routes = (app: express.Application) => {
-  app.get("/orders/users/:userID/current", verifyUserId, currentOrdersByUser);
+  app.get("/five_most_popular", fiveMostPopular);
+  app.post("/orders/users/:userID/current", verifyUserId, currentOrdersByUser);
 };
 
 export default dashboard_routes;
