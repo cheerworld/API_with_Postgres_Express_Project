@@ -1,7 +1,12 @@
 import { User, UserStore } from "../user";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const { POSTGRES_PASSWORD_TEST } = process.env;
 
 const store = new UserStore();
-/*
+
 describe("User Model", () => {
   it("should have an index method", () => {
     expect(store.index).toBeDefined();
@@ -29,16 +34,16 @@ describe("User Model", () => {
 
   it("create method should add a user", async () => {
     const result = await store.create({
-      first_name: "Yuguo",
+      first_name: "Cheer",
       last_name: "Zhao",
-      password: "1234",
+      password: POSTGRES_PASSWORD_TEST as string,
     });
-    expect(result.id).toBe(1);
+    expect(result.id).toBe(2);
   });
 
   it("index method should return a list of users", async () => {
     const result = await store.index();
-    expect(result).toHaveSize(1);
+    expect(result).toHaveSize(2);
   });
 
   it("show method should return the correct user", async () => {
@@ -47,28 +52,35 @@ describe("User Model", () => {
     expect(result.first_name).toEqual("Yuguo");
   });
 
-  it("update method should update the existing user first name to Cheer", async () => {
+  it("update method should update the user id 2's first name to Ann", async () => {
     const user = {
-      id: 1,
-      first_name: "Cheer",
+      id: 2,
+      first_name: "Ann",
       last_name: "Zhao",
-      password: "12345",
+      password: POSTGRES_PASSWORD_TEST as string,
     };
     const result = await store.update(user);
 
-    expect(result.first_name).toEqual("Cheer");
+    expect(result.first_name).toEqual("Ann");
   });
 
   it("authenticate method should verify the input user info match user info in database", async () => {
-    const result = await store.authenticate("Yuguo", "Zhao", "12345");
+    const result = await store.authenticate(
+      "Cheer",
+      "Zhao",
+      POSTGRES_PASSWORD_TEST as string
+    );
 
     expect(result).toBeNull();
   });
 
   it("delete method should delete the user", async () => {
-    await store.delete(1);
+    await store.delete(2);
     const result = await store.index();
-    expect(result).toHaveSize(0);
+    expect(result).toHaveSize(1);
+  });
+
+  afterAll(async () => {
+    await store.delete(1);
   });
 });
-*/

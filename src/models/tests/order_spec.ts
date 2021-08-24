@@ -1,6 +1,11 @@
 import { Order, OrderStore } from "../order";
 import { User, UserStore } from "../user";
 import { Product, ProductStore } from "../product";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const { POSTGRES_PASSWORD_TEST } = process.env;
 
 const productStore = new ProductStore();
 
@@ -9,6 +14,20 @@ const userStore = new UserStore();
 const store = new OrderStore();
 
 describe("Order Model", () => {
+  beforeAll(async () => {
+    await userStore.create({
+      first_name: "Yuguo",
+      last_name: "Zhao",
+      password: POSTGRES_PASSWORD_TEST as string,
+    });
+
+    await productStore.create({
+      name: "Cheer Painting",
+      price: 699.99,
+      category: "painting",
+    });
+  });
+
   it("should have an index method", () => {
     expect(store.index).toBeDefined();
   });
@@ -33,23 +52,12 @@ describe("Order Model", () => {
     expect(store.addProduct).toBeDefined();
   });
 
-  describe("Create an order", () => {
-    it("create method should add a user", async () => {
-      const result = await userStore.create({
-        first_name: "Yuguo",
-        last_name: "Zhao",
-        password: "1234",
-      });
-      expect(result.id).toBe(1);
+  it("create method should add an order", async () => {
+    const result = await store.create({
+      status: "active",
+      user_id: "1",
     });
-
-    it("create method should add an order", async () => {
-      const result = await store.create({
-        status: "active",
-        user_id: "1",
-      });
-      expect(result.id).toBe(1);
-    });
+    expect(result.id).toBe(1);
   });
 
   it("index method should return a list of orders", async () => {
@@ -72,34 +80,18 @@ describe("Order Model", () => {
     });
   });
 
-  describe("addProduct method", () => {
-    it("create method should add a product", async () => {
-      const result = await productStore.create({
-        name: "Cheer Painting",
-        price: 699.99,
-        category: "painting",
-      });
-      expect(result).toEqual({
-        id: 1,
-        name: "Cheer Painting",
-        price: "699.99",
-        category: "painting",
-      });
+  it("addProduct method should add a product to order", async () => {
+    const result = await store.addProduct({
+      quantity: 13,
+      order_id: "1",
+      product_id: "1",
     });
 
-    it("addProduct method should add a product to order", async () => {
-      const result = await store.addProduct({
-        quantity: 13,
-        order_id: "1",
-        product_id: "1",
-      });
-
-      expect(result).toEqual({
-        id: 1,
-        quantity: 13,
-        order_id: "1",
-        product_id: "1",
-      });
+    expect(result).toEqual({
+      id: 1,
+      quantity: 13,
+      order_id: "1",
+      product_id: "1",
     });
   });
 
