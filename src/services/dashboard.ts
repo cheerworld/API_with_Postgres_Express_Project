@@ -13,11 +13,11 @@ export type PopularProducts = {
 
 export class DashboardQueries {
   //Get current Orders by user (args: user id)[token required]
-
   async currentOrdersByUser(id: number): Promise<Order[]> {
     try {
       const conn = await client.connect();
-      const sql = "SELECT * FROM orders WHERE user_id=($1) AND status='active'";
+      const sql =
+        "SELECT order_id, status, product_id, quantity, user_id FROM orders INNER JOIN order_products ON orders.id=order_products.order_id WHERE user_id=($1) AND status='active'";
       const result = await conn.query(sql, [id]);
       conn.release();
 
@@ -31,7 +31,8 @@ export class DashboardQueries {
   async completeOrdersByUser(id: number): Promise<Order[]> {
     try {
       const conn = await client.connect();
-      const sql = "SELECT * FROM orders WHERE user_id=($1)";
+      const sql =
+        "SELECT order_id, status, product_id, quantity, user_id FROM orders INNER JOIN order_products ON orders.id=order_products.order_id WHERE user_id=($1)";
       const result = await conn.query(sql, [id]);
       conn.release();
 
