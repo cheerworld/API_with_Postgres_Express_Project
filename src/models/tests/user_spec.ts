@@ -74,7 +74,7 @@ describe("User Model", () => {
     expect(result).toBeNull();
   });
 
-  it("delete method should delete the user", async () => {
+  it("delete method should delete the selected user", async () => {
     await store.delete(2);
     const result = await store.index();
     expect(result).toHaveSize(1);

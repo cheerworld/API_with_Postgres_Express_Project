@@ -1,6 +1,9 @@
 import { Product, ProductStore } from "../product";
+import { DashboardQueries } from "../../services/dashboard";
 
 const store = new ProductStore();
+
+const dashboardStore = new DashboardQueries();
 
 describe("Product Model", () => {
   it("should have an index method", () => {
@@ -53,6 +56,11 @@ describe("Product Model", () => {
         category: "painting",
       },
     ]);
+  });
+
+  it("productsByCategory method should get products by category", async () => {
+    const result = await dashboardStore.productsByCategory("painting");
+    expect(result).toHaveSize(2);
   });
 
   it("show method should return the correct product", async () => {
