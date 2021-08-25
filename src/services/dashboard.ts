@@ -11,9 +11,17 @@ export type PopularProducts = {
   product_id: string;
 };
 
+export type OrderByUser = {
+  order_id: string;
+  status: string;
+  product_id: string;
+  quantity: number;
+  user_id: string;
+};
+
 export class DashboardQueries {
   //Get current Orders by user (args: user id)[token required]
-  async currentOrdersByUser(id: number): Promise<Order[]> {
+  async currentOrdersByUser(id: number): Promise<OrderByUser[]> {
     try {
       const conn = await client.connect();
       const sql =
@@ -28,7 +36,7 @@ export class DashboardQueries {
   }
 
   //Get complete orders by user (args: user id)[token required]
-  async completeOrdersByUser(id: number): Promise<Order[]> {
+  async completeOrdersByUser(id: number): Promise<OrderByUser[]> {
     try {
       const conn = await client.connect();
       const sql =

@@ -3,6 +3,11 @@ import users_routes from "./handlers/users";
 import product_routes from "./handlers/products";
 import order_routes from "./handlers/orders";
 import dashboard_routes from "./handlers/dashboards";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const { ENV } = process.env;
 
 const app: express.Application = express();
 const address: string = "0.0.0.0:3000";
@@ -20,6 +25,10 @@ product_routes(app);
 order_routes(app);
 dashboard_routes(app);
 
-app.listen(3000, function () {
-  console.log(`starting app on: ${address}`);
-});
+if (ENV === "dev") {
+  app.listen(3000, function () {
+    console.log(`starting app on: ${address}`);
+  });
+}
+
+export default app;

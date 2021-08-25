@@ -63,28 +63,6 @@ describe("Order Model", () => {
     expect(result.id).toBe(1);
   });
 
-  it("currentOrdersByUser should get current orders by user ", async () => {
-    const result = await dashboardStore.currentOrdersByUser(1);
-    expect(result).toEqual([
-      {
-        id: 1,
-        status: "active",
-        user_id: "1",
-      },
-    ]);
-  });
-
-  it("completeOrdersByUser should get complete orders by user ", async () => {
-    const result = await dashboardStore.completeOrdersByUser(1);
-    expect(result).toEqual([
-      {
-        id: 1,
-        status: "active",
-        user_id: "1",
-      },
-    ]);
-  });
-
   it("index method should return a list of orders", async () => {
     const result = await store.index();
     expect(result).toEqual([
@@ -118,6 +96,32 @@ describe("Order Model", () => {
       order_id: "1",
       product_id: "1",
     });
+  });
+
+  it("currentOrdersByUser should get current orders by user ", async () => {
+    const result = await dashboardStore.currentOrdersByUser(1);
+    expect(result).toEqual([
+      {
+        order_id: "1",
+        product_id: "1",
+        quantity: 13,
+        status: "active",
+        user_id: "1",
+      },
+    ]);
+  });
+
+  it("completeOrdersByUser should get complete orders by user ", async () => {
+    const result = await dashboardStore.completeOrdersByUser(1);
+    expect(result).toEqual([
+      {
+        order_id: "1",
+        product_id: "1",
+        quantity: 13,
+        status: "active",
+        user_id: "1",
+      },
+    ]);
   });
 
   it("fiveMostPopular method should show top 5 products ordered by quantity", async () => {
