@@ -17,7 +17,6 @@ export const verifyAuthToken = (
 ) => {
   try {
     const authorizationHeader = req.headers.authorization;
-    //console.log(authorizationHeader);
     const token = (authorizationHeader as string).split(" ")[1];
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET as jwt.Secret);
     next();
@@ -37,9 +36,7 @@ export const verifyUserId = (
     const authorizationHeader = req.headers.authorization;
     const token = (authorizationHeader as string).split(" ")[1];
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET as jwt.Secret);
-    console.log(decoded);
     const id = (decoded as TokenInterface).user.id;
-    console.log(id);
     if (id !== parseInt(req.params.id)) {
       throw new Error("User id does not match!");
     }
