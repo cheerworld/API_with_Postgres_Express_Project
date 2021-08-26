@@ -1,5 +1,14 @@
 import { Product, ProductStore } from "../product";
 import { DashboardQueries } from "../../services/dashboard";
+import dotenv from "dotenv";
+import supertest from "supertest";
+import app from "../../server";
+
+const request = supertest(app);
+
+dotenv.config();
+
+const { POSTGRES_PASSWORD_TEST } = process.env;
 
 const store = new ProductStore();
 
@@ -26,6 +35,72 @@ describe("Product Model", () => {
     expect(store.update).toBeDefined();
   });
 
+  describe("products endpoints testing", () => {
+    let token: string;
+    it("authenticate method to /users/authenticate should authenticate user", async () => {
+      const response = await request
+        .post("/users/authenticate")
+        .send({
+          first_name: "Yuguo",
+          last_name: "Zhao",
+          password: POSTGRES_PASSWORD_TEST as string,
+        })
+        .set("Accept", "application/json");
+      token = "Bearer " + response.body;
+      expect(response.status).toEqual(200);
+    });
+
+    it("posts to /products should create a new product", async () => {
+      const response = await request
+        .post("/products")
+        .send({
+          name: "Yanyuan Necklace",
+          price: 599.99,
+          category: "jewelry",
+        })
+        .set("Accept", "application/json")
+        .set("Authorization", token);
+      expect(response.body).toEqual({
+        id: 2,
+        name: "Yanyuan Necklace",
+        price: "599.99",
+        category: "jewelry",
+      });
+    });
+
+    it("gets /products should get a list of products", async () => {
+      const response = await request.get("/products");
+      expect(response.body.length).toBe(2);
+    });
+
+    it("gets /products/2 should get the selected product", async () => {
+      const response = await request.get("/products/2");
+      expect(response.status).toBe(200);
+    });
+
+    it("put method to /products/2 should update product 2's price to 699.99", async () => {
+      const response = await request
+        .put("/products/2")
+        .send({
+          name: "Yanyuan Necklace",
+          price: 699.99,
+          category: "jewelry",
+        })
+        .set("Accept", "application/json")
+        .set("Authorization", token);
+      expect(response.body.price).toBe("699.99");
+    });
+
+    it("delete method to /products/2 should delete this selected product", async () => {
+      const response = await request
+        .delete("products/2")
+        .set("Accept", "application/json")
+        .set("Authorization", token);
+      console.log(response);
+      expect(response.status).toBe(200);
+    });
+  });
+
   it("create method should add a product", async () => {
     const result = await store.create({
       name: "Monet Lotus Painting",
@@ -33,7 +108,7 @@ describe("Product Model", () => {
       category: "painting",
     });
     expect(result).toEqual({
-      id: 2,
+      id: 3,
       name: "Monet Lotus Painting",
       price: "199.99",
       category: "painting",
@@ -51,6 +126,12 @@ describe("Product Model", () => {
       },
       {
         id: 2,
+        name: "Yanyuan Necklace",
+        price: "699.99",
+        category: "jewelry",
+      },
+      {
+        id: 3,
         name: "Monet Lotus Painting",
         price: "199.99",
         category: "painting",
@@ -65,12 +146,12 @@ describe("Product Model", () => {
 
   it("show method should return the correct product", async () => {
     const result = await store.show(2);
-    expect(result.name).toBe("Monet Lotus Painting");
+    expect(result.name).toBe("Yanyuan Necklace");
   });
 
   it("update method should return the updated product", async () => {
     const result = await store.update({
-      id: 2,
+      id: 3,
       name: "Monet Lotus Painting",
       price: 2999.99,
       category: "painting",
@@ -79,7 +160,7 @@ describe("Product Model", () => {
   });
 
   it("delete method should remove the selected product", async () => {
-    await store.delete(2);
+    await store.delete(3);
     const result = await store.index();
     expect(result).toEqual([
       {
@@ -88,10 +169,17 @@ describe("Product Model", () => {
         price: "699.99",
         category: "painting",
       },
+      {
+        id: 2,
+        name: "Yanyuan Necklace",
+        price: "699.99",
+        category: "jewelry",
+      },
     ]);
   });
 
   afterAll(async () => {
     await store.delete(1);
+    await store.delete(2);
   });
 });

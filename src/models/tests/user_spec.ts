@@ -2,7 +2,6 @@ import { User, UserStore } from "../user";
 import dotenv from "dotenv";
 import supertest from "supertest";
 import app from "../../server";
-import { response } from "express";
 
 const request = supertest(app);
 
@@ -33,7 +32,7 @@ describe("User Model", () => {
     expect(store.update).toBeDefined();
   });
 
-  it("should have a authenticate method", () => {
+  it("should have an authenticate method", () => {
     expect(store.authenticate).toBeDefined();
   });
 
@@ -82,7 +81,6 @@ describe("User Model", () => {
     it("authenticate method to /users/authenticate should fail", async () => {
       const response = await request
         .post("/users/authenticate")
-        .set("Authorization", token)
         .send({
           first_name: "Cheer",
           last_name: "Zhao",
