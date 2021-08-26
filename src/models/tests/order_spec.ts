@@ -3,6 +3,10 @@ import { User, UserStore } from "../user";
 import { Product, ProductStore } from "../product";
 import { DashboardQueries } from "../../services/dashboard";
 import dotenv from "dotenv";
+import supertest from "supertest";
+import app from "../../server";
+
+const request = supertest(app);
 
 dotenv.config();
 
@@ -47,11 +51,11 @@ describe("Order Model", () => {
     expect(store.delete).toBeDefined();
   });
 
-  it("should have a update method", () => {
+  it("should have an update method", () => {
     expect(store.update).toBeDefined();
   });
 
-  it("should have a addProduct method", () => {
+  it("should have an addProduct method", () => {
     expect(store.addProduct).toBeDefined();
   });
 
@@ -61,6 +65,60 @@ describe("Order Model", () => {
       user_id: "1",
     });
     expect(result.id).toBe(1);
+  });
+
+  describe("orders endpoints testing", () => {
+    it("post method to /orders should create a new order", async () => {
+      const response = await request
+        .post("/orders")
+        .send({ user_id: "1" })
+        .set("Accept", "application/json");
+
+      expect(response.body).toEqual({
+        id: 2,
+        status: "active",
+        user_id: "1",
+      });
+    });
+
+    it("gets /orders should get all orders", async () => {
+      const response = await request.get("/orders");
+      expect(response.body.length).toBe(2);
+    });
+
+    it("gets /orders/2 should get the selected order", async () => {
+      const response = await request.get("/orders/2");
+      expect(response.status).toBe(200);
+    });
+
+    it("put method to /orders/2 should update order status to complete", async () => {
+      const response = await request
+        .put("/orders/2")
+        .send({
+          id: 2,
+          status: "complete",
+          user_id: "1",
+        })
+        .set("Accept", "application/json");
+      expect(response.body.status).toBe("complete");
+    });
+
+    it("posts to orders/2/products to add products to order should fail", async () => {
+      const response = await request
+        .post("/orders/2/products")
+        .send({
+          quantity: 1,
+          order_id: "2",
+          product_id: "1",
+        })
+        .set("Accept", "application/json");
+      expect(response.status).toEqual(400);
+    });
+
+    it("delete method to /orders/2 should delete the selected order", async () => {
+      const response = await request.delete("/orders/2");
+      expect(response.status).toBe(200);
+    });
   });
 
   it("index method should return a list of orders", async () => {
@@ -132,12 +190,12 @@ describe("Order Model", () => {
   it("update method should return the updated order", async () => {
     const result = await store.update({
       id: 1,
-      status: "complete",
+      status: "active",
       user_id: "1",
     });
     expect(result).toEqual({
       id: 1,
-      status: "complete",
+      status: "active",
       user_id: "1",
     });
   });
