@@ -93,10 +93,9 @@ describe("Product Model", () => {
 
     it("delete method to /products/2 should delete this selected product", async () => {
       const response = await request
-        .delete("products/2")
-        .set("Accept", "application/json")
-        .set("Authorization", token);
-      console.log(response);
+        .delete("/products/2")
+        .set("Authorization", token)
+        .set("Accept", "application/json");
       expect(response.status).toBe(200);
     });
   });
@@ -125,12 +124,6 @@ describe("Product Model", () => {
         category: "painting",
       },
       {
-        id: 2,
-        name: "Yanyuan Necklace",
-        price: "699.99",
-        category: "jewelry",
-      },
-      {
         id: 3,
         name: "Monet Lotus Painting",
         price: "199.99",
@@ -145,8 +138,8 @@ describe("Product Model", () => {
   });
 
   it("show method should return the correct product", async () => {
-    const result = await store.show(2);
-    expect(result.name).toBe("Yanyuan Necklace");
+    const result = await store.show(1);
+    expect(result.name).toBe("Cheer Painting");
   });
 
   it("update method should return the updated product", async () => {
@@ -169,17 +162,10 @@ describe("Product Model", () => {
         price: "699.99",
         category: "painting",
       },
-      {
-        id: 2,
-        name: "Yanyuan Necklace",
-        price: "699.99",
-        category: "jewelry",
-      },
     ]);
   });
 
   afterAll(async () => {
     await store.delete(1);
-    await store.delete(2);
   });
 });
