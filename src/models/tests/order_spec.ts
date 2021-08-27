@@ -156,6 +156,40 @@ describe("Order Model", () => {
     });
   });
 
+  describe("endpoint tests for currentOrdersByUser and completeOrdersByUser", () => {
+    let token: string;
+    it("authenticates the user", async () => {
+      const response = await request
+        .post("/users/authenticate")
+        .send({
+          first_name: "Yuguo",
+          last_name: "Zhao",
+          password: POSTGRES_PASSWORD_TEST as string,
+        })
+        .set("Accept", "application/json");
+      token = "Bearer " + response.body;
+    });
+
+    it("post method to /orders/users/:id/current should get current orders by selected user", async () => {
+      const response = await request
+        .post("/orders/users/1/current")
+        .set("Authorization", token);
+      expect(response.status).toEqual(200);
+    });
+
+    it("post method to /orders/users/:id/complete should get complete orders by selected user", async () => {
+      const response = await request
+        .post("/orders/users/1/complete")
+        .set("Authorization", token);
+      expect(response.status).toEqual(200);
+    });
+
+    it("get method to /five_most_popular should show top 5 products ordered by quantity", async () => {
+      const response = await request.get("/five_most_popular");
+      expect(response.body[0].quantity).toEqual(13);
+    });
+  });
+
   it("currentOrdersByUser should get current orders by user ", async () => {
     const result = await dashboardStore.currentOrdersByUser(1);
     expect(result).toEqual([

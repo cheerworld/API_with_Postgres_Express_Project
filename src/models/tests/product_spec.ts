@@ -91,6 +91,11 @@ describe("Product Model", () => {
       expect(response.body.price).toBe("699.99");
     });
 
+    it("get method to /products/categories/:category should return products by category", async () => {
+      const response = await request.get("/products/categories/jewelry");
+      expect(response.body[0].category).toEqual("jewelry");
+    });
+
     it("delete method to /products/2 should delete this selected product", async () => {
       const response = await request
         .delete("/products/2")
