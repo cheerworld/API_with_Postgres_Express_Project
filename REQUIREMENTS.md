@@ -65,7 +65,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 | last_name  | VARCHAR(50) NOT NULL |
 | password   | VARCHAR NOT NULL     |
 
-Indexes: "users_pkey" PRIMARY KEY, btree(id)
+- Indexes: "users_pkey" PRIMARY KEY, btree(id)
+- Referenced by: TABLE "orders" CONSTRAINT "orders_user_id_fkey" FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 
 #### orders
 
@@ -75,6 +76,10 @@ Indexes: "users_pkey" PRIMARY KEY, btree(id)
 | status(active or complete) | VARCHAR(64)                                   |
 | user_id                    | bigint REFERENCES users(id) ON DELETE CASCADE |
 
+- Indexes: "orders_pkey" PRIMARY KEY, btree(id)
+- Foreign-key constraints: "orders_user_id_fkey" FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+- Referenced by: TABLE "order_products" CONSTRAINT "order_products_order_id_fkey" FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE
+
 #### order_products
 
 | Columns    | Types                                             |
@@ -83,3 +88,8 @@ Indexes: "users_pkey" PRIMARY KEY, btree(id)
 | quantity   | integer                                           |
 | order_id   | bigint REFERENCES orders(id) ON DELETE CASCADE    |
 | product_id | bigint REFERENCES products(id) ON DELETE RESTRICT |
+
+- Indexes: "order_products_pkey" PRIMARY KEY, btree(id)
+- Foreign-key constraints:
+  "order_products_order_id_fkey" FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE
+  "order_products_product_id_fkey" FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE RESTRICT
