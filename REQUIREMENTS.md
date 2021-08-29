@@ -42,7 +42,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 | POST    | /orders/users/:id/current  | Current Orders by user (args: user id)[verify token user ID required]   |
 | POST    | /orders/users/:id/complete | Completed Orders by user (args: user id)[verify token user ID required] |
 
-## Data Shapes
+## Data Shapes and Schema
 
 #### products
 
@@ -53,6 +53,9 @@ These are the notes from a meeting with the frontend developer that describe wha
 | price    | NUMERIC(10,2) NOT NULL |
 | category | VARCHAR(64)            |
 
+- Indexes: "products_pkey" PRIMARY KEY, btree(id)
+- Referenced by: TABLE "order_products" CONSTRAINT "order_products_product_id_fkey" FOREIGN KEY (product_id) REFERENCERS products(id) ON DELETE RESTRICT
+
 #### users
 
 | Columns    | Types                |
@@ -61,6 +64,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 | first_name | VARCHAR(50) NOT NULL |
 | last_name  | VARCHAR(50) NOT NULL |
 | password   | VARCHAR NOT NULL     |
+
+Indexes: "users_pkey" PRIMARY KEY, btree(id)
 
 #### orders
 
