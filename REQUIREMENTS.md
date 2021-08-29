@@ -1,42 +1,72 @@
 # API Requirements
+
 The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
 
-These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
+These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application.
 
 ## API Endpoints
+
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+
+| Methods | API Endpoints                  | Models                                        |
+| ------- | ------------------------------ | --------------------------------------------- |
+| GET     | /products                      | Index                                         |
+| GET     | /products/:id                  | Show                                          |
+| POST    | /products                      | Create [token required]                       |
+| PUT     | /products/:id                  | Update [token required]                       |
+| DELETE  | /products/:id                  | Remove [token required]                       |
+| GET     | /five_most_popular             | Top 5 most popular products                   |
+| GET     | /products/categories/:category | Products by category (args: product category) |
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+
+| Methods | API Endpoints       | Models                                 |
+| ------- | ------------------- | -------------------------------------- |
+| POST    | /all/users          | Index [token required]                 |
+| POST    | /all/users/:id      | Show [token required]                  |
+| POST    | /users              | Create                                 |
+| PUT     | /users/:id          | Update [verify token user ID required] |
+| DELETE  | /users/:id          | Remove [verify token user ID required] |
+| POST    | /users/authenticate | Authenticate                           |
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+
+| Methods | API Endpoints              | Models                                                                  |
+| ------- | -------------------------- | ----------------------------------------------------------------------- |
+| GET     | /orders                    | Index                                                                   |
+| GET     | /orders/:id                | Show                                                                    |
+| POST    | /orders                    | Create                                                                  |
+| PUT     | /orders/:id                | Update                                                                  |
+| DELETE  | /orders/:id                | Remove                                                                  |
+| POST    | /orders/:id/products       | Add product to order                                                    |
+| POST    | /orders/users/:id/current  | Current Orders by user (args: user id)[verify token user ID required]   |
+| POST    | /orders/users/:id/complete | Completed Orders by user (args: user id)[verify token user ID required] |
 
 ## Data Shapes
-#### Product
--  id
-- name
-- price
-- [OPTIONAL] category
 
-#### User
-- id
-- firstName
-- lastName
-- password
+#### products
 
-#### Orders
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+- id SERIAL PRIMARY KEY
+- name VARCHAR(100) NOT NULL
+- price NUMERIC(10,2) NOT NULL
+- category VARCHAR(64)
 
+#### users
+
+- id SERIAL PRIMARY KEY
+- first_name VARCHAR(50) NOT NULL
+- last_name VARCHAR(50) NOT NULL
+- password VARCHAR NOT NULL
+
+#### orders
+
+- id SERIAL PRIMARY KEY
+- status(active or complete) VARCHAR(64)
+- user_id bigint REFERENCES users(id) ON DELETE CASCADE
+
+#### order_products
+
+- id SERIAL PRIMARY KEY
+- quantity integer
+- order_id bigint REFERENCES orders(id) ON DELETE CASCADE
+- product_id bigint REFERENCES products(id) ON DELETE RESTRICT
