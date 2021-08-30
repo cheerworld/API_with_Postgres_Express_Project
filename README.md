@@ -4,7 +4,7 @@
 
 This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
 
-- To get this project, type `git clone https://github.com/cheerworld/API_with_Postgres_Express_Project.git` in your terminal and `cd api-with-postgresql-and-express-project` to get into your project.
+- To get this project, type `git clone https://github.com/cheerworld/API_with_Postgres_Express_Project.git` in your terminal and `cd api-with-postgresql-and-express-project` to get into your project. This project is running on port 0.0.0.0:3000.
 
 To get started developing:
 
