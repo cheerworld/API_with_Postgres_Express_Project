@@ -8,7 +8,7 @@ dotenv.config();
 
 const store = new UserStore();
 
-const index = async (_req: Request, res: Response) => {
+const index = async (_req: Request, res: Response): Promise<void> => {
   try {
     const users = await store.index();
     res.json(users);
@@ -18,7 +18,7 @@ const index = async (_req: Request, res: Response) => {
   }
 };
 
-const show = async (req: Request, res: Response) => {
+const show = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await store.show(parseInt(req.params.id));
     res.json(user);
@@ -28,7 +28,7 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
   const user: User = {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
@@ -48,7 +48,7 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response): Promise<void> => {
   const user: User = {
     id: parseInt(req.params.id),
     first_name: req.body.first_name,
@@ -69,7 +69,7 @@ const update = async (req: Request, res: Response) => {
   }
 };
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response): Promise<void> => {
   try {
     const deleted_user = await store.delete(parseInt(req.params.id));
     res.json(deleted_user);
@@ -79,7 +79,7 @@ const remove = async (req: Request, res: Response) => {
   }
 };
 
-const authenticate = async (req: Request, res: Response) => {
+const authenticate = async (req: Request, res: Response): Promise<void> => {
   try {
     const authUser = await store.authenticate(
       req.body.first_name,
@@ -105,7 +105,7 @@ const authenticate = async (req: Request, res: Response) => {
   }
 };
 
-const users_routes = (app: express.Application) => {
+const users_routes = (app: express.Application): void => {
   app.post("/all/users", verifyAuthToken, index);
   app.post("/all/users/:id", verifyAuthToken, show);
   app.post("/users", create);

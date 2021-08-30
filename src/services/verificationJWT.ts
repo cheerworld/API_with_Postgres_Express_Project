@@ -14,11 +14,11 @@ export const verifyAuthToken = (
   req: Request,
   res: Response,
   next: express.NextFunction
-) => {
+): void => {
   try {
     const authorizationHeader = req.headers.authorization;
     const token = (authorizationHeader as string).split(" ")[1];
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET as jwt.Secret);
+    jwt.verify(token, process.env.TOKEN_SECRET as jwt.Secret);
     next();
   } catch (error) {
     res.status(401);
@@ -31,7 +31,7 @@ export const verifyUserId = (
   req: Request,
   res: Response,
   next: express.NextFunction
-) => {
+): void => {
   try {
     const authorizationHeader = req.headers.authorization;
     const token = (authorizationHeader as string).split(" ")[1];

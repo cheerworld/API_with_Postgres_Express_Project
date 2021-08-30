@@ -4,7 +4,7 @@ import { verifyAuthToken } from "../services/verificationJWT";
 
 const store = new ProductStore();
 
-const index = async (_req: Request, res: Response) => {
+const index = async (_req: Request, res: Response): Promise<void> => {
   try {
     const products = await store.index();
     res.json(products);
@@ -14,7 +14,7 @@ const index = async (_req: Request, res: Response) => {
   }
 };
 
-const show = async (req: Request, res: Response) => {
+const show = async (req: Request, res: Response): Promise<void> => {
   try {
     const product = await store.show(parseInt(req.params.id));
     res.json(product);
@@ -24,7 +24,7 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
   const product: Product = {
     name: req.body.name,
     price: Number(req.body.price),
@@ -40,7 +40,7 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response): Promise<void> => {
   const product: Product = {
     id: parseInt(req.params.id),
     name: req.body.name,
@@ -56,7 +56,7 @@ const update = async (req: Request, res: Response) => {
   }
 };
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response): Promise<void> => {
   try {
     const deleted_product = await store.delete(parseInt(req.params.id));
     res.json(deleted_product);
@@ -66,7 +66,7 @@ const remove = async (req: Request, res: Response) => {
   }
 };
 
-const product_routes = (app: express.Application) => {
+const product_routes = (app: express.Application): void => {
   app.get("/products", index);
   app.get("/products/:id", show);
   app.post("/products", verifyAuthToken, create);

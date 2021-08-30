@@ -1,4 +1,4 @@
-import { User, UserStore } from "../user";
+import { UserStore } from "../user";
 import dotenv from "dotenv";
 import supertest from "supertest";
 import app from "../../server";
@@ -99,16 +99,6 @@ describe("User Model", () => {
     });
   });
 
-  /*
-  it("create method should add a user", async () => {
-    const result = await store.create({
-      first_name: "Cheer",
-      last_name: "Zhao",
-      password: POSTGRES_PASSWORD_TEST as string,
-    });
-    expect(result.id).toBe(2);
-  });
-*/
   it("index method should return a list of users", async () => {
     const result = await store.index();
     expect(result).toHaveSize(1);
@@ -147,9 +137,4 @@ describe("User Model", () => {
     const result = await store.index();
     expect(result).toEqual([]);
   });
-  /*
-  afterAll(async () => {
-    await store.delete(1);
-  });
-  */
 });

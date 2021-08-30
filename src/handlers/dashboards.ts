@@ -4,7 +4,7 @@ import { verifyUserId } from "../services/verificationJWT";
 
 const dashboard = new DashboardQueries();
 
-const fiveMostPopular = async (req: Request, res: Response) => {
+const fiveMostPopular = async (req: Request, res: Response): Promise<void> => {
   try {
     const products = await dashboard.fiveMostPopular();
     res.json(products);
@@ -14,7 +14,10 @@ const fiveMostPopular = async (req: Request, res: Response) => {
   }
 };
 
-const currentOrdersByUser = async (req: Request, res: Response) => {
+const currentOrdersByUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const orders = await dashboard.currentOrdersByUser(parseInt(req.params.id));
     res.json(orders);
@@ -24,7 +27,10 @@ const currentOrdersByUser = async (req: Request, res: Response) => {
   }
 };
 
-const completeOrdersByUser = async (req: Request, res: Response) => {
+const completeOrdersByUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const orders = await dashboard.completeOrdersByUser(
       parseInt(req.params.id)
@@ -36,7 +42,10 @@ const completeOrdersByUser = async (req: Request, res: Response) => {
   }
 };
 
-const productsByCategory = async (req: Request, res: Response) => {
+const productsByCategory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const products = await dashboard.productsByCategory(req.params.category);
     res.json(products);
@@ -46,7 +55,7 @@ const productsByCategory = async (req: Request, res: Response) => {
   }
 };
 
-const dashboard_routes = (app: express.Application) => {
+const dashboard_routes = (app: express.Application): void => {
   app.get("/five_most_popular", fiveMostPopular);
   app.get("/products/categories/:category", productsByCategory);
   app.post("/orders/users/:id/current", verifyUserId, currentOrdersByUser);

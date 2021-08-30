@@ -1,4 +1,4 @@
-import { Product, ProductStore } from "../product";
+import { ProductStore } from "../product";
 import { DashboardQueries } from "../../services/dashboard";
 import dotenv from "dotenv";
 import supertest from "supertest";

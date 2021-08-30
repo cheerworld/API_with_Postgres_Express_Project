@@ -1,6 +1,6 @@
-import { Order, OrderStore } from "../order";
-import { User, UserStore } from "../user";
-import { Product, ProductStore } from "../product";
+import { OrderStore } from "../order";
+import { UserStore } from "../user";
+import { ProductStore } from "../product";
 import { DashboardQueries } from "../../services/dashboard";
 import dotenv from "dotenv";
 import supertest from "supertest";

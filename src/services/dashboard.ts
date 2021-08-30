@@ -1,5 +1,4 @@
 import client from "../database";
-import { Order } from "../models/order";
 import { Product } from "../models/product";
 
 export type PopularProducts = {
@@ -50,7 +49,7 @@ export class DashboardQueries {
     }
   }
 
-  //Get 5 most popular products by oders's quantity
+  //Get 5 most popular products by orders's quantity
   async fiveMostPopular(): Promise<PopularProducts[]> {
     try {
       const conn = await client.connect();

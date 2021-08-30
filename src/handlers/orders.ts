@@ -3,7 +3,7 @@ import { Order, AddProduct, OrderStore } from "../models/order";
 
 const store = new OrderStore();
 
-const index = async (_req: Request, res: Response) => {
+const index = async (_req: Request, res: Response): Promise<void> => {
   try {
     const orders = await store.index();
     res.json(orders);
@@ -13,7 +13,7 @@ const index = async (_req: Request, res: Response) => {
   }
 };
 
-const show = async (req: Request, res: Response) => {
+const show = async (req: Request, res: Response): Promise<void> => {
   try {
     const order = await store.show(parseInt(req.params.id));
     res.json(order);
@@ -23,7 +23,7 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response): Promise<void> => {
   const order: Order = {
     status: "active",
     user_id: req.body.user_id,
@@ -38,7 +38,7 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response): Promise<void> => {
   const order: Order = {
     status: req.body.status,
     user_id: req.body.user_id,
@@ -53,7 +53,7 @@ const update = async (req: Request, res: Response) => {
   }
 };
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response): Promise<void> => {
   try {
     const deleted_order = await store.delete(parseInt(req.params.id));
     res.json(deleted_order);
@@ -63,7 +63,7 @@ const remove = async (req: Request, res: Response) => {
   }
 };
 
-const addProduct = async (req: Request, res: Response) => {
+const addProduct = async (req: Request, res: Response): Promise<void> => {
   const add_Product: AddProduct = {
     quantity: parseInt(req.body.quantity),
     order_id: req.params.id,
@@ -79,7 +79,7 @@ const addProduct = async (req: Request, res: Response) => {
   }
 };
 
-const order_routes = (app: express.Application) => {
+const order_routes = (app: express.Application): void => {
   app.get("/orders", index);
   app.get("/orders/:id", show);
   app.post("/orders", create);

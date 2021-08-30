@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 
-app.get("/", function (req: Request, res: Response) {
+app.get("/", (req: Request, res: Response): void => {
   res.send("Hello World!");
 });
 
@@ -26,7 +26,7 @@ order_routes(app);
 dashboard_routes(app);
 
 if (ENV === "dev") {
-  app.listen(3000, function () {
+  app.listen(3000, (): void => {
     console.log(`starting app on: ${address}`);
   });
 }

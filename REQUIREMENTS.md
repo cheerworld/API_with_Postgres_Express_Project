@@ -31,16 +31,16 @@ These are the descriptions that describe what endpoints the API needs to supply,
 
 #### Orders
 
-| Method | API Endpoint               | Model                                                                   | Parameter     | Sample JSON                                                                    |
-| ------ | -------------------------- | ----------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------ |
-| GET    | /orders                    | Index                                                                   | none          | none                                                                           |
-| GET    | /orders/:id                | Show                                                                    | id - [number] | none                                                                           |
-| POST   | /orders                    | Create                                                                  | none          | { "user_id": "user id" }                                                       |
-| PUT    | /orders/:id                | Update                                                                  | id - [number] | { "status": "status", "user_id": "user id" }                                   |
-| DELETE | /orders/:id                | Remove                                                                  | id - [number] | none                                                                           |
-| POST   | /orders/:id/products       | Add product to order                                                    | id - [number] | { "quantity": "quantity", "product_id": "product_id", "order_id": "order_id" } |
-| POST   | /orders/users/:id/current  | Current Orders by user (args: user id)[verify token user ID required]   | id - [number] | none                                                                           |
-| POST   | /orders/users/:id/complete | Completed Orders by user (args: user id)[verify token user ID required] | id - [number] | none                                                                           |
+| Method | API Endpoint               | Model                                                                   | Parameter     | Sample JSON                                            |
+| ------ | -------------------------- | ----------------------------------------------------------------------- | ------------- | ------------------------------------------------------ |
+| GET    | /orders                    | Index                                                                   | none          | none                                                   |
+| GET    | /orders/:id                | Show                                                                    | id - [number] | none                                                   |
+| POST   | /orders                    | Create                                                                  | none          | { "user_id": "user id" }                               |
+| PUT    | /orders/:id                | Update                                                                  | id - [number] | { "status": "status", "user_id": "user id" }           |
+| DELETE | /orders/:id                | Remove                                                                  | id - [number] | none                                                   |
+| POST   | /orders/:id/products       | Add product to order                                                    | id - [number] | { "quantity": "quantity", "product_id": "product_id" } |
+| POST   | /orders/users/:id/current  | Current Orders by user (args: user id)[verify token user ID required]   | id - [number] | none                                                   |
+| POST   | /orders/users/:id/complete | Completed Orders by user (args: user id)[verify token user ID required] | id - [number] | none                                                   |
 
 ## Data Shapes and Schema
 
