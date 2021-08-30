@@ -20,14 +20,14 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Users
 
-| Methods | API Endpoints       | Models                                 |
-| ------- | ------------------- | -------------------------------------- |
-| POST    | /all/users          | Index [token required]                 |
-| POST    | /all/users/:id      | Show [token required]                  |
-| POST    | /users              | Create                                 |
-| PUT     | /users/:id          | Update [verify token user ID required] |
-| DELETE  | /users/:id          | Remove [verify token user ID required] |
-| POST    | /users/authenticate | Authenticate                           |
+| Methods | API Endpoints       | Models                                 | Params                                                                    |
+| ------- | ------------------- | -------------------------------------- | ------------------------------------------------------------------------- |
+| POST    | /all/users          | Index [token required]                 | None                                                                      |
+| POST    | /all/users/:id      | Show [token required]                  | req.params.id                                                             |
+| POST    | /users              | Create                                 | req.body.first_name, req.body.last_name, req.body.password                |
+| PUT     | /users/:id          | Update [verify token user ID required] | req.params.id, req.body.first_name, req.body.last_name, req.body.password |
+| DELETE  | /users/:id          | Remove [verify token user ID required] | req.params.id                                                             |
+| POST    | /users/authenticate | Authenticate                           | req.body.first_name, req.body.last_name, req.body.password                |
 
 #### Orders
 
