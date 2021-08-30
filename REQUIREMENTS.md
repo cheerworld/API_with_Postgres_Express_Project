@@ -20,29 +20,14 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Users
 
-| Methods | API Endpoints  | Models                 | Sample JSON       |
-| ------- | -------------- | ---------------------- | ----------------- |
-| POST    | /all/users     | Index [token required] | None              |
-| POST    | /all/users/:id | Show [token required]  | {"id": "user id"} |
-| POST    | /users         | Create                 | {                 |
-
-    "first_name": "first name",
-    "last_name": "last name",
-    "password": "password"
-
-} |
-| PUT | /users/:id | Update [verify token user ID required] | {
-"id": "user id",
-"first_name": "first name",
-"last_name": "last name",
-"password": "password"
-} |
-| DELETE | /users/:id | Remove [verify token user ID required] | {"id": "user id"} |
-| POST | /users/authenticate | Authenticate | {
-"first_name": "first name",
-"last_name": "last name",
-"password": "password"
-} |
+| Methods | API Endpoints       | Models                                 | Sample JSON                                                                                      |
+| ------- | ------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| POST    | /all/users          | Index [token required]                 | None                                                                                             |
+| POST    | /all/users/:id      | Show [token required]                  | { "id": "user id" }                                                                              |
+| POST    | /users              | Create                                 | { "first_name": "first name", "last_name": "last name", "password": "password" }                 |
+| PUT     | /users/:id          | Update [verify token user ID required] | { "id": "user id", "first_name": "first name", "last_name": "last name" "password": "password" } |
+| DELETE  | /users/:id          | Remove [verify token user ID required] | { "id": "user id" }                                                                              |
+| POST    | /users/authenticate | Authenticate                           | { "first_name": "first name", "last_name": "last name", "password": "password" }                 |
 
 #### Orders
 
