@@ -45,6 +45,19 @@ This application has the following libraries:
 - supertest for testing endpoints
 - bcrypt from npm for hashing passwords
 
+## Environment Variables
+
+POSTGRES_HOST=localhost
+POSTGRES_DB=art_store_dev
+POSTGRES_USER=art_store_user
+POSTGRES_PASSWORD=password123
+POSTGRES_TEST_DB=art_store_dev_test
+ENV=test
+PEPPER=hello-world
+SALT_ROUNDS=10
+TOKEN_SECRET=POPO1234!
+POSTGRES_PASSWORD_TEST=12345
+
 ## More Information
 
 - You can find the environment variable structure in .env.example.
