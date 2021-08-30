@@ -8,39 +8,39 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Products
 
-| Methods | API Endpoints                  | Models                                        |
-| ------- | ------------------------------ | --------------------------------------------- |
-| GET     | /products                      | Index                                         |
-| GET     | /products/:id                  | Show                                          |
-| POST    | /products                      | Create [token required]                       |
-| PUT     | /products/:id                  | Update [token required]                       |
-| DELETE  | /products/:id                  | Remove [token required]                       |
-| GET     | /five_most_popular             | Top 5 most popular products                   |
-| GET     | /products/categories/:category | Products by category (args: product category) |
+| Method | API Endpoint                   | Model                                         | Parameter           | Sample JSON                                                          |
+| ------ | ------------------------------ | --------------------------------------------- | ------------------- | -------------------------------------------------------------------- |
+| GET    | /products                      | Index                                         | none                | none                                                                 |
+| GET    | /products/:id                  | Show                                          | id - [number]       | none                                                                 |
+| POST   | /products                      | Create [token required]                       | none                | { "name": "product name", "price": "price", "category": "category" } |
+| PUT    | /products/:id                  | Update [token required]                       | id - [number]       | { "name": "product name", "price": "price", "category": "category" } |
+| DELETE | /products/:id                  | Remove [token required]                       | id - [number]       | none                                                                 |
+| GET    | /five_most_popular             | Top 5 most popular products                   | none                | none                                                                 |
+| GET    | /products/categories/:category | Products by category (args: product category) | category - [string] | none                                                                 |
 
 #### Users
 
-| Methods | API Endpoints       | Models                                 | Parameter     | Sample JSON                                                                      |
-| ------- | ------------------- | -------------------------------------- | ------------- | -------------------------------------------------------------------------------- |
-| POST    | /all/users          | Index [token required]                 | none          | none                                                                             |
-| POST    | /all/users/:id      | Show [token required]                  | id - [number] | none                                                                             |
-| POST    | /users              | Create                                 | none          | { "first_name": "first name", "last_name": "last name", "password": "password" } |
-| PUT     | /users/:id          | Update [verify token user ID required] | id - [number] | { "first_name": "first name", "last_name": "last name" "password": "password" }  |
-| DELETE  | /users/:id          | Remove [verify token user ID required] | id - [number] | none                                                                             |
-| POST    | /users/authenticate | Authenticate                           | none          | { "first_name": "first name", "last_name": "last name", "password": "password" } |
+| Method | API Endpoint        | Model                                  | Parameter     | Sample JSON                                                                      |
+| ------ | ------------------- | -------------------------------------- | ------------- | -------------------------------------------------------------------------------- |
+| POST   | /all/users          | Index [token required]                 | none          | none                                                                             |
+| POST   | /all/users/:id      | Show [token required]                  | id - [number] | none                                                                             |
+| POST   | /users              | Create                                 | none          | { "first_name": "first name", "last_name": "last name", "password": "password" } |
+| PUT    | /users/:id          | Update [verify token user ID required] | id - [number] | { "first_name": "first name", "last_name": "last name" "password": "password" }  |
+| DELETE | /users/:id          | Remove [verify token user ID required] | id - [number] | none                                                                             |
+| POST   | /users/authenticate | Authenticate                           | none          | { "first_name": "first name", "last_name": "last name", "password": "password" } |
 
 #### Orders
 
-| Methods | API Endpoints              | Models                                                                  |
-| ------- | -------------------------- | ----------------------------------------------------------------------- |
-| GET     | /orders                    | Index                                                                   |
-| GET     | /orders/:id                | Show                                                                    |
-| POST    | /orders                    | Create                                                                  |
-| PUT     | /orders/:id                | Update                                                                  |
-| DELETE  | /orders/:id                | Remove                                                                  |
-| POST    | /orders/:id/products       | Add product to order                                                    |
-| POST    | /orders/users/:id/current  | Current Orders by user (args: user id)[verify token user ID required]   |
-| POST    | /orders/users/:id/complete | Completed Orders by user (args: user id)[verify token user ID required] |
+| Method | API Endpoint               | Model                                                                   | Parameter     | Sample JSON                                                                    |
+| ------ | -------------------------- | ----------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------ |
+| GET    | /orders                    | Index                                                                   | none          | none                                                                           |
+| GET    | /orders/:id                | Show                                                                    | id - [number] | none                                                                           |
+| POST   | /orders                    | Create                                                                  | none          | {"user_id": "user id"}                                                         |
+| PUT    | /orders/:id                | Update                                                                  | id - [number] | { "status": "status", "user_id": "user id", }                                  |
+| DELETE | /orders/:id                | Remove                                                                  | id - [number] | none                                                                           |
+| POST   | /orders/:id/products       | Add product to order                                                    | id - [number] | { "quantity": "quantity", "product_id": "product_id", "order_id": "order_id" } |
+| POST   | /orders/users/:id/current  | Current Orders by user (args: user id)[verify token user ID required]   | id - [number] | none                                                                           |
+| POST   | /orders/users/:id/complete | Completed Orders by user (args: user id)[verify token user ID required] | id - [number] | none                                                                           |
 
 ## Data Shapes and Schema
 
