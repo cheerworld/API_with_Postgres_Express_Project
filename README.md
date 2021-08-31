@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-This repo contains a basic Node and Express app for Storefront Backend API.
+This repo contains a Node and Express app for Storefront Backend API.
 
 - To get this project, type `git clone https://github.com/cheerworld/API_with_Postgres_Express_Project.git` in your terminal and `cd api-with-postgresql-and-express-project` to get into your project. This project is running on port 3000.
 
