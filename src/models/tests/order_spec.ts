@@ -184,9 +184,9 @@ describe("Order Model", () => {
       expect(response.status).toEqual(200);
     });
 
-    it("get method to /five_most_popular should show top 5 products ordered by quantity", async () => {
+    it("get method to /five_most_popular should show top 5 products ordered by volume", async () => {
       const response = await request.get("/five_most_popular");
-      expect(response.body[0].quantity).toEqual(13);
+      expect(response.body[0].volume).toEqual("13");
     });
   });
 
@@ -216,9 +216,9 @@ describe("Order Model", () => {
     ]);
   });
 
-  it("fiveMostPopular method should show top 5 products ordered by quantity", async () => {
+  it("fiveMostPopular method should show top 5 products ordered by volume", async () => {
     const result = await dashboardStore.fiveMostPopular();
-    expect(result[0].quantity).toBe(13);
+    expect(result[0].volume).toBe("13");
   });
 
   it("update method should return the updated order", async () => {

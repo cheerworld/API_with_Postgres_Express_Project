@@ -2,12 +2,12 @@ import client from "../database";
 import { Product } from "../models/product";
 
 export type PopularProducts = {
+  id: number;
   name: string;
   price: string;
   category: string;
-  quantity: number;
-  order_id: string;
-  product_id: string;
+  volume: string;
+  orders_placed: string;
 };
 
 export type OrderByUser = {
@@ -49,12 +49,12 @@ export class DashboardQueries {
     }
   }
 
-  //Get 5 most popular products by orders's quantity
+  //Get 5 most popular products by orders's volume
   async fiveMostPopular(): Promise<PopularProducts[]> {
     try {
       const conn = await client.connect();
       const sql =
-        " SELECT name, price, category, quantity, order_id, product_id FROM products INNER JOIN order_products ON products.id=order_products.product_id ORDER BY quantity DESC LIMIT 5";
+        "SELECT p.id, p.name, p.price, p.category, SUM(op.quantity) AS volume, COUNT(op.order_id) AS orders_placed FROM (products p INNER JOIN order_products op ON p.id=op.product_id) GROUP BY p.id ORDER BY volume DESC LIMIT 5";
       const result = await conn.query(sql);
       conn.release();
 
@@ -63,6 +63,7 @@ export class DashboardQueries {
       throw new Error(`Unable to get products by popularity. Error: ${err}.`);
     }
   }
+
   //Get products by category (args: product category)
   async productsByCategory(category: string): Promise<Product[]> {
     try {
